@@ -118,7 +118,12 @@ for block in blocks:
                 csvYr = '20'+csvYr
             csvMth = convert_mth_strings(csvMth.upper())
             data.append([csvYr, csvMth, url])
+    print block['href']
     if '/council-0' in block['href']:
+        if 'http' not in block['href']:
+            year_url = 'https://www.corby.gov.uk' + block['href']
+        else:
+            year_url = block['href']
         year_html = requests.get(year_url)
         year_soup = BeautifulSoup(year_html.text, 'lxml')
         links = year_soup.find_all('span', 'file')
