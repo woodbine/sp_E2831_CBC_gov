@@ -116,6 +116,8 @@ for block in blocks:
             csvYr = file_name.split()[1]
             if '20' not in csvYr:
                 csvYr = '20'+csvYr
+            if '20Published' in csvYr:
+                csvYr = '2014'
             csvMth = convert_mth_strings(csvMth.upper())
             data.append([csvYr, csvMth, url])
     print block['href']
