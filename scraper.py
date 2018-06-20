@@ -108,7 +108,7 @@ for block in blocks:
     year_html = requests.get(year_url)
     year_soup = BeautifulSoup(year_html.text, 'lxml')
     print year_soup
-    links = year_soup.find('div', 'field-items').find_all('span', 'file')
+    links = year_soup.find_all('span', 'file')
     for link in links:
         if '.csv' in link.find('a')['href']:
             url = link.find('a')['href']
