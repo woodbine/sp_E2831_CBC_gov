@@ -94,8 +94,8 @@ data = []
 
 #### READ HTML 1.0
 
-html = urllib2.urlopen(url)
-soup = BeautifulSoup(html, 'lxml')
+html = requests.get(url)
+soup = BeautifulSoup(html.text, 'lxml')
 
 #### SCRAPE DATA
 
@@ -105,8 +105,8 @@ for block in blocks:
         year_url = 'https://www.corby.gov.uk' + block['href']
     else:
         year_url = block['href']
-    year_html = urllib2.urlopen(year_url)
-    year_soup = BeautifulSoup(year_html, 'lxml')
+    year_html = requests.get(year_url)
+    year_soup = BeautifulSoup(year_html.text, 'lxml')
     links = year_soup.find('div', 'view-content').find_all('span', 'file')
     for link in links:
         if '.csv' in link.find('a')['href']:
