@@ -114,6 +114,8 @@ for block in blocks:
             file_name = link.find('a').text.strip()
             csvMth = file_name[:3]
             csvYr = file_name.split()[1]
+            if '20' not in csvYr:
+                csvYr = '20'+csvYr
             csvMth = convert_mth_strings(csvMth.upper())
             data.append([csvYr, csvMth, url])
 
