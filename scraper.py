@@ -85,8 +85,8 @@ def convert_mth_strings ( mth_string ):
 
 #### VARIABLES 1.0
 
-entity_id = "E2632_BDC_gov"
-url = "https://www.broadland.gov.uk/info/200197/spending_and_transparency/339/council_spending_over_250"
+entity_id = "E2831_CBC_gov"
+url = "https://www.corby.gov.uk/home/council/open-data-and-transparency/council-budgets-spending/council-spending-over-£250"
 errors = 0
 data = []
 
@@ -98,28 +98,23 @@ soup = BeautifulSoup(html, 'lxml')
 
 #### SCRAPE DATA
 
-links = soup.find('div', 'editor').find_all('a', href=True)
-for link in links:
-    if 'http' not in link['href']:
-        year_url = 'https://www.broadland.gov.uk' + link['href']
+blocks = soup.find('div', attrs = {'class': 'view-content'}).find_all('a')
+for block in blocks:
+    if 'http' not in block['href']:
+        year_url = 'https://www.corby.gov.uk' + block['href']
     else:
-        year_url = link['href']
+        year_url = block['href']
     year_html = urllib2.urlopen(year_url)
     year_soup = BeautifulSoup(year_html, 'lxml')
-    blocks = year_soup.find_all('span', 'download-listing__file-tag download-listing__file-tag--type')
-    for block in blocks:
-        if 'CSV' in block.text:
-            url = block.find_next('a')['href']
-            if 'http' not in url:
-                url = 'https://www.broadland.gov.uk' + url
-            else:
-                url = url
-            file_name = block.find_next('a')['aria-label']
-            csvMth = file_name.split()[-2][:3]
-            csvYr = file_name.split()[-1]
+    links = year_soup.find('div', 'view-content').find_all('span', 'file')
+    for link in links:
+        if '.csv' in link.find('a')['href']:
+            url = link.find('a')['href']
+            file_name = link.find('a').text.strip()
+            csvMth = file_name[:3]
+            csvYr = file_name.split()[1]
             csvMth = convert_mth_strings(csvMth.upper())
             data.append([csvYr, csvMth, url])
-
 
 #### STORE DATA 1.0
 
