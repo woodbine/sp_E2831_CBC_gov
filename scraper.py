@@ -99,7 +99,7 @@ soup = BeautifulSoup(html.text, 'lxml')
 
 #### SCRAPE DATA
 
-blocks = soup.find('div', attrs = {'class': 'view-content'}).find_all('a')
+blocks = soup.find('section', id="block-views-child-pages-block").find('div', attrs = {'class': 'view-content'}).find_all('a')
 for block in blocks:
     if 'http' not in block['href']:
         year_url = 'https://www.corby.gov.uk' + block['href']
@@ -120,14 +120,12 @@ for block in blocks:
                 csvYr = '2014'
             csvMth = convert_mth_strings(csvMth.upper())
             data.append([csvYr, csvMth, url])
-    print block['href']
     if 'council-0' in block['href']:
         print block['href']
         if 'http' not in block['href']:
             year_url = 'https://www.corby.gov.uk' + block['href']
         else:
             year_url = block['href']
-        print year_url
         year_html = requests.get(year_url)
         year_soup = BeautifulSoup(year_html.text, 'lxml')
         blocks = year_soup.find('div', attrs = {'class': 'view-content'}).find_all('a')
